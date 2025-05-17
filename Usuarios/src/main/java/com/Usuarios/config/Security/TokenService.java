@@ -14,12 +14,12 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    public String generateToken(User userDTO) {
+    public String generateToken(UserDTO userDTO) {
         Algorithm algorithm = Algorithm.HMAC256("fiap");
 
         String token = JWT.create()
                 .withIssuer("Usuarios") // nome da aplicação la no application properties primeira linha
-                .withSubject(userDTO.getEmail())
+                .withSubject(userDTO.email())
                 .withExpiresAt(expirationTime())
                 .sign(algorithm);
         return token;

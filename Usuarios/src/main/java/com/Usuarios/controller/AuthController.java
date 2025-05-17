@@ -1,6 +1,7 @@
 package com.Usuarios.controller;
 
 import com.Usuarios.Entity.User;
+import com.Usuarios.Entity.UserDTO;
 import com.Usuarios.Repository.UserRepository;
 import com.Usuarios.config.Security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +23,20 @@ public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
     private TokenService tokenService;
     @Autowired
     private UserRepository userRepository;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody User user){
+    public ResponseEntity login(@RequestBody UserDTO userDTO){
 
         UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+                new UsernamePasswordAuthenticationToken(userDTO.email(), userDTO.password());
 
         Authentication authentication = authenticationManager.authenticate(auth);
 
-        String token = tokenService.generateToken(user);
+        String token = tokenService.generateToken(userDTO);
         return ResponseEntity.ok().body(token);
     }
 
